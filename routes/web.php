@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProjectController;;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\AlumnoController;
 
 
 /*
@@ -22,6 +23,12 @@ Route::get('/', function () {
 Route::get('/project/create', [ProjectController::class, 'index'])->name('project/create.index');
 Route::get('/project/listado', [ProjectController::class, 'listado'])->name('project/listado.listado');
 Route::post('form/store', [ProjectController::class, 'store'])->name('guardar_todo');
+
+Route::get('/school/form', [AlumnoController::class, 'form_alumno'])->name('school/alumno.form_alumno');
+Route::post('alumno/create', [AlumnoController::class, 'store'])->name('alumno/create.store');
+Route::get('/school/list', [AlumnoController::class, 'list_alumno'])->name('school/listado.list_alumno');
+
+
 
 
 

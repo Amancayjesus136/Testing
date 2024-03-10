@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Objetivo;
 use App\Models\Indicador;
 use App\Models\Actividad;
+use App\Models\Project;
 
 class ProjectController extends Controller
 {
@@ -15,63 +16,71 @@ class ProjectController extends Controller
     }
 
     public function listado()
-    {
-        $objetivos = Objetivo::all();
-        return view('project.listado', compact('objetivos'));
-    }
+{
+    $projects = Project::with('objetivos.indicadores.actividades')->get();
+    return view('project.listado', compact('projects'));
+}
 
-    public function store(Request $request)
-    {
-        // Crear objetivos
+public function store(Request $request)
+{
+    // Crear proyecto
+    $proyecto = Project::create([
+        'titulo' => $request->input('titulo'),
+        'dimension' => $request->input('dimension'),
+    ]);
+
+    // Verificar si existe el campo 'objetivos' en la solicitud
+    if ($request->has('objetivos')) {
         $objetivosData = $request->input('objetivos');
-        
-        if ($objetivosData && is_array($objetivosData)) {
-            foreach ($objetivosData as $objetivoData) {
-                // Verificar si 'nombre' está presente antes de intentar acceder a él
-                $nombreObjetivo = $objetivoData['nombre'] ?? null;
-    
-                if ($nombreObjetivo) {
-                    $objetivo = Objetivo::create([
-                        'nombre' => $nombreObjetivo,
-                        'proyecto' => $request->input('proyecto'),
-                        'dimension' => $request->input('dimension'),
-                    ]);
-    
-                    // Crear indicadores
-                    $indicadoresData = $objetivoData['indicadores'] ?? [];
-                    
-                    foreach ($indicadoresData as $indicadorData) {
-                        // Verificar si 'nombre' está presente antes de intentar acceder a él
-                        $nombreIndicador = $indicadorData['nombre'] ?? null;
-    
-                        if ($nombreIndicador) {
-                            $indicador = Indicador::create([
-                                'nombre' => $nombreIndicador,
-                                'id_objetivo' => $objetivo->id_objetivo,
-                            ]);
-    
-                            // Crear actividades
-                            $actividadesData = $indicadorData['actividades'] ?? [];
-    
-                            foreach ($actividadesData as $actividadData) {
-                                // Verificar si 'nombre' está presente antes de intentar acceder a él
-                                $nombreActividad = $actividadData['nombre'] ?? null;
-    
-                                if ($nombreActividad) {
-                                    Actividad::create([
-                                        'nombre' => $nombreActividad,
-                                        'id_indicador' => $indicador->id_indicador,
-                                    ]);
-                                }
+
+        // Iterar sobre los datos de los objetivos
+        foreach ($objetivosData as $objetivoData) {
+            // Verificar si 'nombre' está presente antes de intentar acceder a él
+            $nombreObjetivo = $objetivoData['nombre'] ?? null;
+
+            // Verificar si 'nombre' tiene un valor
+            if ($nombreObjetivo) {
+                // Crear un objetivo asociado al proyecto
+                $objetivo = $proyecto->objetivos()->create([
+                    'nombre' => $nombreObjetivo,
+                ]);
+
+                // Crear indicadores asociados al objetivo
+                $indicadoresData = $objetivoData['indicadores'] ?? [];
+
+                foreach ($indicadoresData as $indicadorData) {
+                    $nombreIndicador = $indicadorData['nombre'] ?? null;
+
+                    if ($nombreIndicador) {
+                        $indicador = Indicador::create([
+                            'nombre' => $nombreIndicador,
+                            'id_objetivo' => $objetivo->id_objetivo,
+                            'id_project' => $proyecto->id_project,
+                        ]);
+
+                        // Crear actividades asociadas al indicador
+                        $actividadesData = $indicadorData['actividades'] ?? [];
+
+                        foreach ($actividadesData as $actividadData) {
+                            $nombreActividad = $actividadData['nombre'] ?? null;
+
+                            if ($nombreActividad) {
+                                Actividad::create([
+                                    'nombre' => $nombreActividad,
+                                    'id_indicador' => $indicador->id_indicador,
+                                    'id_project' => $proyecto->id_project,
+                                ]);
                             }
                         }
                     }
                 }
             }
         }
-    
-        return redirect()->back()->with('success', 'Detalles editados correctamente');
     }
+
+    return redirect()->back()->with('success', 'Detalles editados correctamente');
+}
+
     
 
 

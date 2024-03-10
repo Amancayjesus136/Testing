@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Indicador extends Model
 {
     use HasFactory;
+
     protected $table = 'indicadores';
     protected $primaryKey = 'id_indicador';
-    protected $fillable = ['nombre', 'id_objetivo'];
+   
+    protected $fillable = ['nombre', 'id_objetivo', 'id_project'];
 
     public function objetivo()
     {

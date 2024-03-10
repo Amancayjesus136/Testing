@@ -11,7 +11,7 @@ class Actividad extends Model
 
     protected $table = 'actividades';
     protected $primaryKey = 'id_actividades';
-    protected $fillable = ['nombre', 'id_indicador'];
+    protected $fillable = ['nombre', 'id_indicador', 'id_project'];
 
     public function indicador()
     {
@@ -20,7 +20,7 @@ class Actividad extends Model
 
     public function objetivo()
     {
-        return $this->hasOneThrough(Objetivo::class, Indicador::class, 'id_objetivo', 'id_indicador', 'id_objetivo');
+        return $this->hasOneThrough(Objetivo::class, Indicador::class, 'id_objetivo', 'id_indicador');
     }
 }
 
