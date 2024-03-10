@@ -30,13 +30,6 @@
 
                 <div class="col-12">
                     <div class="mb-3">
-                        <label for="formFileMultiple" class="form-label">Subir archivos múltiples</label>
-                        <input class="form-control" name="nombre_materia[]" type="file" id="formFileMultiple" multiple accept=".pdf, .docx, .xlsx, .pptx, .png, .jpg, .jpeg">
-                    </div>
-                </div>
-
-                {{-- <div class="col-12">
-                    <div class="mb-3">
                         <label for="" class="form-label">Materia</label>
                         <select name="nombre_materia[]" id="materias" multiple>
                             @foreach ($users as $user)
@@ -44,7 +37,14 @@
                             @endforeach
                         </select>
                     </div>
-                </div> --}}
+                </div>
+
+                <div class="col-12">
+                    <div class="mb-3">
+                        <label for="formFileMultiple" class="form-label">Subir archivos múltiples</label>
+                        <input class="form-control" name="nombre_evidencia[]" type="file" id="formFileMultiple" multiple accept=".pdf, .docx, .xlsx, .pptx, .png, .jpg, .jpeg">
+                    </div>
+                </div>
 
                 <div class="col-12 d-flex justify-content-end">
                     <button type="submit" class="btn btn-primary btn-sm">Registrar</button>

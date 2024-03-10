@@ -45,6 +45,11 @@
                                                 <a href="#" class="btn btn-primary btn-sm">{{ $materia->nombre_materia }}</a>
                                             @endforeach
                                         </td>
+                                        <td>
+                                            @foreach ($alumno->evidencias as $evidencia)
+                                                <a href="#" class="btn btn-primary btn-sm">{{ $evidencia->nombre_evidencia }}</a>
+                                            @endforeach
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -5,6 +5,8 @@ use App\Models\Alumno;
 use App\Models\Materia;
 use App\Models\MateriaEvento;
 use App\Models\Usuarios;
+use App\Models\Evidencia;
+use App\Models\EvidenciaAlumno;
 
 use Illuminate\Http\Request;
 
@@ -36,17 +38,17 @@ class AlumnoController extends Controller
             }
         }
 
-        // if ($request->hasFile('nombre_materia')) {
-        //     foreach ($request->file('nombre_materia') as $file) {
-        //         $fileName = $file->getClientOriginalName();
+        if ($request->hasFile('nombre_evidencia')) {
+            foreach ($request->file('nombre_evidencia') as $file) {
+                $fileName = $file->getClientOriginalName();
     
-        //         $materia = Materia::create([
-        //             'nombre_materia' => $fileName,
-        //         ]);
+                $evidencia = Evidencia::create([
+                    'nombre_evidencia' => $fileName,
+                ]);
     
-        //         $alumno->materias()->attach($materia->id_materia);
-        //     }
-        // }
+                $alumno->evidencias()->attach($evidencia->id_evidencia);
+            }
+        }
 
         return redirect()->route('school/alumno.form_alumno')->with('success', 'Alumno y materias creados exitosamente.');
     }
