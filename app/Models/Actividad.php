@@ -8,20 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Actividad extends Model
 {
     use HasFactory;
+    protected $table = 'actividad';
+    protected $primaryKey = 'id_actividad';
+    protected $fillable = [
+        'nombre_actividad'
+    ];
 
-    protected $table = 'actividades';
-    protected $primaryKey = 'id_actividades';
-    protected $fillable = ['nombre', 'id_indicador', 'id_project'];
-
-    public function indicador()
+    public function actividades()
     {
-        return $this->belongsTo(Indicador::class, 'id_indicador');
-    }
-
-    public function objetivo()
-    {
-        return $this->hasOneThrough(Objetivo::class, Indicador::class, 'id_objetivo', 'id_indicador');
+        return $this->Alumno::belongsToMany(Alumno::class, 'actividad_alumno, id_alumno, id_actividad');
     }
 }
-
-

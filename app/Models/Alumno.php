@@ -24,4 +24,9 @@ class Alumno extends Model
     {
         return $this->belongsToMany(Evidencia::class, 'evidencia_alumno', 'id_alumno', 'id_evidencia');
     }
+
+    public function actividades()
+    {
+        return $this->belongsToMany(Actividad::class, 'actividad_alumno', 'id_alumno', 'id_actividad');
+    }
 }

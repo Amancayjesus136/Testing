@@ -7,6 +7,7 @@ use App\Models\MateriaEvento;
 use App\Models\Usuarios;
 use App\Models\Evidencia;
 use App\Models\EvidenciaAlumno;
+use App\Models\Actividad;
 
 use Illuminate\Http\Request;
 
@@ -28,16 +29,16 @@ class AlumnoController extends Controller
     {
         $data = $request->all();
         $alumno = Alumno::create($data);
-
+    
         if ($request->has('nombre_materia')) {
             $materiasIds = $request->input('nombre_materia');
-        
+    
             foreach ($materiasIds as $materiaId) {
                 $materia = Materia::firstOrCreate(['id_materia' => $materiaId], ['nombre_materia' => $materiaId]);
                 $alumno->materias()->syncWithoutDetaching($materia->id_materia);
             }
         }
-
+    
         if ($request->hasFile('nombre_evidencia')) {
             foreach ($request->file('nombre_evidencia') as $file) {
                 $fileName = $file->getClientOriginalName();
@@ -50,6 +51,23 @@ class AlumnoController extends Controller
             }
         }
 
+        if ($request->has('nombre_actividad')) {
+            $nombreActividades = $request->input('nombre_actividad');
+
+            foreach ($nombreActividades as $actividadSeparada) {
+                $valores = explode(',', $actividadSeparada);
+
+                foreach ($valores as $valor) {
+                    $actividad = Actividad::create([
+                        'nombre_actividad' => $valor,
+                    ]);
+
+                    $alumno->actividades()->attach($actividad->id_actividad);
+                }
+            }
+        }
+    
         return redirect()->route('school/alumno.form_alumno')->with('success', 'Alumno y materias creados exitosamente.');
     }
+    
 }
