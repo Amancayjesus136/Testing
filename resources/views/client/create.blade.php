@@ -39,9 +39,9 @@
                     <div class="mb-3">
                         <label for="tagsInput" class="form-label">Etiquetas</label>
                         <select class="form-control tags-input" name="nombre_materia[]" id="tagsInput" multiple>
-                            <option value="Tag1">Tag1</option>
-                            <option value="Tag2">Tag2</option>
-                            <option value="Tag3">Tag3</option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->name }}">{{ $user->name }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
