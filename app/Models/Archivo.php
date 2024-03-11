@@ -13,4 +13,9 @@ class Archivo extends Model
     protected $fillable = [
         'nombre_archivo'
     ];
+
+    public function clientes()
+    {
+        return $this->belongsToMany(Client::class, 'archivo_cliente', 'id_cliente', 'id_archivo');
+    }
 }

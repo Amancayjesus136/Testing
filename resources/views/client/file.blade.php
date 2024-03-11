@@ -7,43 +7,46 @@
     <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
     <title>Dropzone</title>
 </head>
-    <body>
+<body>
 
+    <div class="container">
         <form action="{{ route('alumno/evidence.store_evidence') }}" method="POST" enctype="multipart/form-data" class="dropzone" id="my-dropzone">
             @csrf
             <input type="hidden" name="nombre_archivo[]">
+            <div class="mb-3">
+                <label for="nombre_cliente" class="form-label">Nombre del Cliente</label>
+                <input type="text" name="nombre_cliente" id="nombre_cliente" class="form-control" placeholder="Nombre del Cliente">
+            </div>
         </form>
-        
+
         <button type="button" class="btn btn-primary" id="guardar-cambios">Guardar Cambios</button>
-        
+    </div>
 
-        <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
-        <script>
-            document.getElementById('guardar-cambios').addEventListener('click', (event) => {
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <script>
+        document.getElementById('guardar-cambios').addEventListener('click', (event) => {
+            event.preventDefault(); 
+            document.getElementById('my-dropzone').submit(); 
+        });
 
-                event.preventDefault(); 
-                document.getElementById('my-dropzone').submit(); 
-            });
+        Dropzone.options.myDropzone = {
+            url: "{{ route('alumno/evidence.store_evidence') }}", 
+            method: "POST", 
+            paramName: "nombre_archivo[]",
+            headers: {
+                'X-CSRF-TOKEN': "{{ csrf_token() }}" 
+            },
+            dictDefaultMessage: "Arrastre una imagen",
+            acceptedFiles: "image/*",
+            maxFilesize: 2,
+            maxFiles: 4,  
+            success: function (file, response) {
 
-            Dropzone.options.myDropzone = {
-                url: "{{ route('alumno/evidence.store_evidence') }}", 
-                method: "POST", 
-                paramName: "nombre_archivo[]",
-                headers: {
-                    'X-CSRF-TOKEN': "{{ csrf_token() }}" 
-                },
-                dictDefaultMessage: "Arrastre una imagen",
-                acceptedFiles: "image/*",
-                maxFilesize: 2,
-                maxFiles: 4,  
-                success: function (file, response) {
+            },
+            error: function (file, response) {
                 
-                },
-                error: function (file, response) {
-                
-                }
-            };
-        </script>
-
-    </body>
+            }
+        };
+    </script>
+</body>
 </html>

@@ -8,6 +8,7 @@ use App\Models\Usuarios;
 use App\Models\Evidencia;
 use App\Models\EvidenciaAlumno;
 use App\Models\Actividad;
+use App\Models\Client;
 use App\Models\Archivo;
 
 use Illuminate\Http\Request;
@@ -77,8 +78,14 @@ class AlumnoController extends Controller
         return redirect()->route('school/alumno.form_alumno')->with('success', 'Alumno y materias creados exitosamente.');
     }
 
+
     public function store_evidence(Request $request)
     {
+
+        $cliente = new Client;
+        $cliente->nombre_cliente = $request->input('nombre_cliente');
+        $cliente->save();
+
         if ($request->hasFile('nombre_archivo')) {
             $archivos = $request->file('nombre_archivo');
 
@@ -87,19 +94,16 @@ class AlumnoController extends Controller
                     $nombreArchivo = $archivo->getClientOriginalName();
                     $archivo->storeAs('archivos', $nombreArchivo, 'public');
 
-                    Archivo::create([
+                    $cliente->archivos()->create([
                         'nombre_archivo' => $nombreArchivo,
                     ]);
                 }
             }
 
-            return redirect()->back()->with('success', 'Actividades creadas correctamente');
+            return redirect()->back()->with('success', 'Archivos y cliente subidos correctamente');
         }
 
-        return redirect()->back()->with('error', 'Error al procesar los archivos');
+        return redirect()->back()->with('error', 'No se han seleccionado archivos para subir');
     }
-
-
-
     
 }
