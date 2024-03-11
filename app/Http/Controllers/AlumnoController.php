@@ -8,8 +8,10 @@ use App\Models\Usuarios;
 use App\Models\Evidencia;
 use App\Models\EvidenciaAlumno;
 use App\Models\Actividad;
+use App\Models\Archivo;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AlumnoController extends Controller
 {
@@ -23,6 +25,11 @@ class AlumnoController extends Controller
     {
         $users = Usuarios::all();
         return view('client.create', compact('users'));
+    }
+
+    public function form_evidence()
+    {
+        return view('client.file');
     }
 
     public function store(Request $request)
@@ -69,5 +76,30 @@ class AlumnoController extends Controller
     
         return redirect()->route('school/alumno.form_alumno')->with('success', 'Alumno y materias creados exitosamente.');
     }
+
+    public function store_evidence(Request $request)
+    {
+        if ($request->hasFile('nombre_archivo')) {
+            $archivos = $request->file('nombre_archivo');
+
+            foreach ($archivos as $archivo) {
+                if ($archivo->isValid()) {
+                    $nombreArchivo = $archivo->getClientOriginalName();
+                    $archivo->storeAs('archivos', $nombreArchivo, 'public');
+
+                    Archivo::create([
+                        'nombre_archivo' => $nombreArchivo,
+                    ]);
+                }
+            }
+
+            return redirect()->back()->with('success', 'Actividades creadas correctamente');
+        }
+
+        return redirect()->back()->with('error', 'Error al procesar los archivos');
+    }
+
+
+
     
 }

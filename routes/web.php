@@ -25,7 +25,9 @@ Route::get('/project/listado', [ProjectController::class, 'listado'])->name('pro
 Route::post('form/store', [ProjectController::class, 'store'])->name('guardar_todo');
 
 Route::get('/school/form', [AlumnoController::class, 'form_alumno'])->name('school/alumno.form_alumno');
+Route::get('/school/evidence', [AlumnoController::class, 'form_evidence'])->name('school/evidence.form_evidence');
 Route::post('alumno/create', [AlumnoController::class, 'store'])->name('alumno/create.store');
+Route::post('evidence/create', [AlumnoController::class, 'store_evidence'])->name('alumno/evidence.store_evidence');
 Route::get('/school/list', [AlumnoController::class, 'list_alumno'])->name('school/listado.list_alumno');
 
 
