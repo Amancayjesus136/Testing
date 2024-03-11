@@ -33,6 +33,12 @@ class AlumnoController extends Controller
         return view('client.file');
     }
 
+    public function list_dropzone()
+    {
+        $dropzones = Client::all();
+        return view('client.list-drop', compact('dropzones'));
+    }
+
     public function store(Request $request)
     {
         $data = $request->all();

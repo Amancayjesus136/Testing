@@ -29,6 +29,7 @@ Route::get('/school/evidence', [AlumnoController::class, 'form_evidence'])->name
 Route::post('alumno/create', [AlumnoController::class, 'store'])->name('alumno/create.store');
 Route::post('evidence/create', [AlumnoController::class, 'store_evidence'])->name('alumno/evidence.store_evidence');
 Route::get('/school/list', [AlumnoController::class, 'list_alumno'])->name('school/listado.list_alumno');
+Route::get('/school/dropzone', [AlumnoController::class, 'list_dropzone'])->name('school/dropzone.list_dropzone');
 
 
 
