@@ -81,29 +81,23 @@ class AlumnoController extends Controller
 
     public function store_evidence(Request $request)
     {
+        $data = $request->all();
 
-        $cliente = new Client;
-        $cliente->nombre_cliente = $request->input('nombre_cliente');
-        $cliente->save();
+        $cliente = Client::firstOrCreate(['nombre_cliente' => $data['nombre_cliente']]);
 
         if ($request->hasFile('nombre_archivo')) {
-            $archivos = $request->file('nombre_archivo');
+            foreach ($request->file('nombre_archivo') as $file) {
+                $fileName = $file->getClientOriginalName();
 
-            foreach ($archivos as $archivo) {
-                if ($archivo->isValid()) {
-                    $nombreArchivo = $archivo->getClientOriginalName();
-                    $archivo->storeAs('archivos', $nombreArchivo, 'public');
+                $archivo = Archivo::firstOrCreate(['nombre_archivo' => $fileName]);
 
-                    $cliente->archivos()->create([
-                        'nombre_archivo' => $nombreArchivo,
-                    ]);
+                if (!$cliente->archivos->contains($archivo->id_archivo)) {
+                    $cliente->archivos()->attach($archivo->id_archivo);
                 }
             }
-
-            return redirect()->back()->with('success', 'Archivos y cliente subidos correctamente');
         }
 
-        return redirect()->back()->with('error', 'No se han seleccionado archivos para subir');
+        return redirect()->back()->with('success', 'Archivos registrados y asociados al cliente correctamente');
     }
-    
+
 }
