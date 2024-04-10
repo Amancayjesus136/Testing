@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\AlumnoController;
-
+use App\Http\Controllers\IconoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +30,11 @@ Route::post('alumno/create', [AlumnoController::class, 'store'])->name('alumno/c
 Route::post('evidence/create', [AlumnoController::class, 'store_evidence'])->name('alumno/evidence.store_evidence');
 Route::get('/school/list', [AlumnoController::class, 'list_alumno'])->name('school/listado.list_alumno');
 Route::get('/school/dropzone', [AlumnoController::class, 'list_dropzone'])->name('school/dropzone.list_dropzone');
+
+
+Route::get('/icono/create', [IconoController::class, 'create'])->name('icono.create');
+Route::post('icono/registro', [IconoController::class, 'store'])->name('icono.registro');
+
 
 
 

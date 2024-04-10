@@ -43,24 +43,24 @@ class AlumnoController extends Controller
     {
         $data = $request->all();
         $alumno = Alumno::create($data);
-    
+
         if ($request->has('nombre_materia')) {
             $materiasIds = $request->input('nombre_materia');
-    
+
             foreach ($materiasIds as $materiaId) {
                 $materia = Materia::firstOrCreate(['id_materia' => $materiaId], ['nombre_materia' => $materiaId]);
                 $alumno->materias()->syncWithoutDetaching($materia->id_materia);
             }
         }
-    
+
         if ($request->hasFile('nombre_evidencia')) {
             foreach ($request->file('nombre_evidencia') as $file) {
                 $fileName = $file->getClientOriginalName();
-    
+
                 $evidencia = Evidencia::create([
                     'nombre_evidencia' => $fileName,
                 ]);
-    
+
                 $alumno->evidencias()->attach($evidencia->id_evidencia);
             }
         }
@@ -80,7 +80,7 @@ class AlumnoController extends Controller
                 }
             }
         }
-    
+
         return redirect()->route('school/alumno.form_alumno')->with('success', 'Alumno y materias creados exitosamente.');
     }
 

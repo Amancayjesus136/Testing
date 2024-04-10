@@ -15,16 +15,6 @@ class Alumno extends Model
         'apellido_alumno',
     ];
 
-    public function materias()
-    {
-        return $this->belongsToMany(Materia::class, 'materias_evento', 'id_alumno', 'id_materia');
-    }
-
-    public function evidencias()
-    {
-        return $this->belongsToMany(Evidencia::class, 'evidencia_alumno', 'id_alumno', 'id_evidencia');
-    }
-
     public function actividades()
     {
         return $this->belongsToMany(Actividad::class, 'actividad_alumno', 'id_alumno', 'id_actividad');
