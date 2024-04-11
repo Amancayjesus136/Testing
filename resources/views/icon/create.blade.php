@@ -50,7 +50,7 @@
                     <td>
                         <ul>
                             @foreach ($iconoPrincipal->iconos as $icono)
-                                <li>{{ $icono->titulo_icono }}</li>
+                                <li>{{ $icono->icono }} - {{ $icono->titulo_icono }}- {{ $icono->descripcion_icono }}</li>
                             @endforeach
                         </ul>
                     </td>
